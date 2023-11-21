@@ -15,8 +15,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/@madeval/waves.js",
-      "require": "./dist/@madeval/waves.umd.cjs"
+      "import": "./dist/waves.js",
+      "require": "./dist/waves.umd.cjs"
     }
   },
   "scripts": {

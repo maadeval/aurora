@@ -1,5 +1,7 @@
-import { ToastProps } from './Toast.types'
+export interface ToastProps {
+  text: string
+}
 
-export function Toast({ text }: ToastProps) {
+export const Toast = ({ text }: ToastProps) => {
   return <div>{text}</div>
 }

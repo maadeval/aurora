@@ -5,7 +5,7 @@
     "email": "alvarez.fing@gmail.com"
   },
   "license": "MIT",
-  "version": "0.0.1-alpha",
+  "version": "0.0.2-alpha",
   "type": "module",
   "files": [
     "dist"

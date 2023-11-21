@@ -13,12 +13,6 @@
   "main": "./dist/waves.umd.cjs",
   "module": "./dist/waves.js",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/waves.js",
-      "require": "./dist/waves.umd.cjs"
-    }
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

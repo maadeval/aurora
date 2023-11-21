@@ -10,8 +10,8 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/@madeval/waves.js",
-  "module": "./dist/@madeval/waves.umd.cjs",
+  "main": "./dist/@madeval/waves.umd.cjs",
+  "module": "./dist/@madeval/waves.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {

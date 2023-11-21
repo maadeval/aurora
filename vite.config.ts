@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'Waves',
-      fileName: '@madeval/waves',
+      name: 'Toast',
+      fileName: '@madeval/toast',
     },
     rollupOptions: {
       external: ['react', 'react-dom'],

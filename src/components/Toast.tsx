@@ -60,43 +60,53 @@ export const Toast = () => {
     }
   }, [])
 
-  console.log(toastState)
+  const handlePauseAllToast = () => {
+    setToastState((prev) => {
+      const newToasts = new Map(prev)
+      for (const [index, toast] of newToasts) {
+        const hasTimeoutId = toast.timeoutId != null
+        if (!hasTimeoutId) continue
+
+        newToasts.set(index, {
+          ...toast,
+          timeoutId: null,
+          duration: toast.duration! - (Date.now() - toast.timestamp!),
+        })
+
+        clearTimeout(toast.timeoutId!)
+      }
+      return newToasts
+    })
+  }
+
+  const handleResumeAllToast = () => {
+    setToastState((prev) => {
+      const newToasts = new Map(prev)
+      for (const [index, toast] of newToasts) {
+        const hasTimeoutId = toast.timeoutId != null
+        const hasTimestamp = toast.timestamp != null
+        const hasDuration = toast.duration != null
+        if (!hasTimeoutId && !hasTimestamp && !hasDuration) continue
+
+        newToasts.set(index, {
+          ...toast,
+          timeoutId: startTimeoutToAutoDelete({
+            id: index,
+            duration: toast.duration!,
+          }),
+          timestamp: Date.now(),
+        })
+      }
+      return newToasts
+    })
+  }
 
   if (toastState.size === 0) return null
 
   return (
-    <div>
+    <div onMouseEnter={handlePauseAllToast} onMouseLeave={handleResumeAllToast}>
       {[...toastState].map(([index, toast]) => (
-        <div
-          onMouseEnter={() => {
-            setToastState((prev) => {
-              const newToasts = new Map(prev)
-              newToasts.set(index, {
-                ...toast,
-                timeoutId: null,
-              })
-              return newToasts
-            })
-
-            clearTimeout(toast.timeoutId)
-          }}
-          onMouseLeave={() => {
-            const timeoutId = startTimeoutToAutoDelete({
-              id: index,
-              duration: toast.duration ?? 5000,
-            })
-
-            setToastState((prev) => {
-              const newToasts = new Map(prev)
-              newToasts.set(index, {
-                ...toast,
-                timeoutId,
-              })
-              return newToasts
-            })
-          }}
-          key={index}
-        >
+        <div key={index}>
           {toast.showCloseButton && (
             <button onClick={() => eventDelete.delete(index)}>❌</button>
           )}

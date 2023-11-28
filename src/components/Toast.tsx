@@ -30,9 +30,9 @@ export const Toast = () => {
   useEffect(() => {
     const handleUpdateToast = (toast: IToast) => {
       setToastState((prev) => {
-        const newToasts = new Map(prev)
-        newToasts.set(toast.id, toast)
-        return newToasts
+        const newToast = new Map(prev)
+        newToast.set(toast.id, toast)
+        return newToast
       })
     }
 
@@ -69,11 +69,11 @@ export const Toast = () => {
 
         newToasts.set(index, {
           ...toast,
-          timeoutId: null,
+          timeoutId: undefined,
           duration: toast.duration! - (Date.now() - toast.timestamp!),
         })
 
-        clearTimeout(toast.timeoutId!)
+        clearTimeout(toast.timeoutId)
       }
       return newToasts
     })
@@ -110,8 +110,8 @@ export const Toast = () => {
           {toast.showCloseButton && (
             <button onClick={() => eventDelete.delete(index)}>❌</button>
           )}
-          {toast.title}
-          {toast.body}
+          <h3>{toast.title}</h3>
+          <p>{toast.body}</p>
         </div>
       ))}
     </div>

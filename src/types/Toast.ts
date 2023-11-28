@@ -4,6 +4,7 @@ import { ToastId } from './ToastId'
 import { ToastPosition } from './ToastPosition'
 import { ToastTypes } from './ToastTypes'
 import { ToastCloseFunction } from './ToastCloseFunction'
+import { ToastTimeoutControl } from './ToastTimeoutControl'
 
 export type Toast = {
   id: ToastId
@@ -14,7 +15,8 @@ export type Toast = {
   showCloseButton?: boolean
   duration?: number
   onClose?: ToastCloseFunction
-} & ToastContent
+} & ToastContent &
+  ToastTimeoutControl
 
 export type ToastWithoutId = Omit<Toast, 'id'>
 export type ToastWithoutIdAndType = Omit<ToastWithoutId, 'type'>

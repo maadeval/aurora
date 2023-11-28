@@ -92,6 +92,7 @@ export const All: Story = {
             eventCreate.success({
               title: 'success action',
               showCloseButton: true,
+              duration: 15000,
             })
           }
         >
@@ -102,6 +103,7 @@ export const All: Story = {
             eventCreate.error({
               title: 'error action',
               showCloseButton: true,
+              duration: 15000,
             })
           }
         >

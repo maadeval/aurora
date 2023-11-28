@@ -23,9 +23,10 @@ function unsubscribe(fn: (toast: Toast) => void) {
 function emitEventCreate(type: ToastTypes) {
   return (toast: ToastWithoutIdAndType) => {
     const id = window.crypto.randomUUID()
+    // TODO: remove this if pinned. If pinned is not necessary to set duration, timeoutId and timestamp
     const timeoutId = startTimeoutToAutoDelete({
       id,
-      duration: (toast.duration = 3000),
+      duration: toast.duration ?? 5000,
     })
 
     const event = new CustomEvent(CUSTOM_EVENT_CREATE_NAME, {

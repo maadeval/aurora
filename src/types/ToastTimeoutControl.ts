@@ -1,4 +1,4 @@
 export interface ToastTimeoutControl {
-  timeoutId?: number | null
+  timeoutId?: NodeJS.Timeout
   timestamp?: number
 }

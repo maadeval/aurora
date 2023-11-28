@@ -1,6 +1,6 @@
 import { Toast, ToastWithoutIdAndType } from '../types/Toast'
 import { ToastTypes } from '../types/ToastTypes'
-import { startTimeoutToAutoDelete } from './eventHelpers'
+import { handleGetTimingProps } from './eventHelpers'
 import { CreateToastPromise, CustomEventDetail } from './eventTypes'
 import { eventUpdate } from './eventUpdate'
 
@@ -23,19 +23,17 @@ function unsubscribe(fn: (toast: Toast) => void) {
 function emitEventCreate(type: ToastTypes) {
   return (toast: ToastWithoutIdAndType) => {
     const id = window.crypto.randomUUID()
-    // TODO: remove this if pinned. If pinned is not necessary to set duration, timeoutId and timestamp
-    const timeoutId = startTimeoutToAutoDelete({
+
+    const timingProps = handleGetTimingProps({
+      ...toast,
       id,
-      duration: toast.duration ?? 5000,
+      type,
     })
 
     const event = new CustomEvent(CUSTOM_EVENT_CREATE_NAME, {
       detail: {
         ...toast,
-        type,
-        id,
-        timestamp: Date.now(),
-        timeoutId,
+        ...timingProps,
       },
     })
 
@@ -52,21 +50,15 @@ const error = (config: ToastWithoutIdAndType) =>
 const warning = (config: ToastWithoutIdAndType) =>
   emitEventCreate('warning')(config)
 const info = (config: ToastWithoutIdAndType) => emitEventCreate('info')(config)
-// this is internal method to set the initial status on the promise toast
 const loading = (config: ToastWithoutIdAndType) =>
   emitEventCreate('loading')(config)
 const custom = (config: ToastWithoutIdAndType) =>
-  emitEventCreate('custom')(config) // TODO: change custom to default (?) not set styles, this is the different between custom and others
+  emitEventCreate('custom')(config)
 const promise = <T>(
   callback: (props?: T) => Promise<T>,
   type: CreateToastPromise<T>
 ) => {
-  const DEFAULT_LOADING_DURATION = 10000
-
-  const updateableToastId = loading({
-    ...type.loading,
-    duration: DEFAULT_LOADING_DURATION,
-  })
+  const updateableToastId = loading(type.loading)
 
   callback()
     .then((data) => {

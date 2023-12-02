@@ -24,6 +24,10 @@ function emitEventCreate(type: ToastTypes) {
   return (toast: ToastWithoutIdAndType) => {
     const id = window.crypto.randomUUID()
 
+    // check is title and body is empty
+    if (!toast.title && !toast.body)
+      throw new Error('Title or body is required')
+
     const timingProps = handleGetTimingProps({
       ...toast,
       id,

@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react'
 import { Toast as IToast } from '../types/Toast'
 import { eventCreate } from '../core/eventCreate'

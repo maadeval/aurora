@@ -18,7 +18,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest"
+    "test": "cypress run --component",
+    "test:open": "cypress open --component"
   },
   "peerDependencies": {
     "react": "^18.2.0",

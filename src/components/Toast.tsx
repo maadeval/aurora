@@ -7,7 +7,12 @@ import { ToastId } from '../types/ToastId'
 import { eventDelete } from '../core/eventDelete'
 import { startTimeoutToAutoDelete } from '../core/eventHelpers'
 
-export const Toast = () => {
+type Props = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onMouseEnter' | 'onMouseLeave'
+>
+
+export const Toast = (props: Props) => {
   const [toastState, setToastState] = useState(new Map<ToastId, IToast>())
 
   /* set new toast */
@@ -105,7 +110,11 @@ export const Toast = () => {
   if (toastState.size === 0) return null
 
   return (
-    <div onMouseEnter={handlePauseAllToast} onMouseLeave={handleResumeAllToast}>
+    <div
+      {...props}
+      onMouseEnter={handlePauseAllToast}
+      onMouseLeave={handleResumeAllToast}
+    >
       {[...toastState].map(([index, toast]) => (
         <div key={index}>
           {toast.showCloseButton && (

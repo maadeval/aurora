@@ -118,7 +118,7 @@ describe('<Toast />', () => {
     }).should('not.exist')
   })
 
-  it.only('should mantain toast open when mouse enter', () => {
+  it('should mantain toast open when mouse enter', () => {
     const customDuration = 1000
     mount(
       <>
@@ -144,7 +144,6 @@ describe('<Toast />', () => {
 
     cy.get('[data-testid="toast"]').should('be.visible')
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     cy.get('[data-testid="toast"]').realHover()
 
     cy.wait(customDuration)

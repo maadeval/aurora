@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react-swc'
 
@@ -20,9 +20,5 @@ export default defineConfig({
         },
       },
     },
-  },
-  test: {
-    environment: 'jsdom',
-    setupFiles: './tests/config.ts',
   },
 })

@@ -150,4 +150,76 @@ describe('<Toast />', () => {
 
     cy.get('[data-testid="toast"]').should('be.visible')
   })
+
+  it('should open multiple toasts', () => {
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click()
+
+    cy.get('h3').should('have.text', 'custom title').should('have.length', 1)
+
+    cy.get('[data-testid="button"]').click()
+
+    cy.get('h3').should('have.length', 2)
+  })
+
+  it.only('should close automatic toasts by duration', () => {
+    const duration = 1000
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+              duration,
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click() // <- show first toast
+
+    cy.get('h3').should('have.text', 'custom title').should('have.length', 1)
+
+    cy.wait(duration / 2)
+    cy.get('[data-testid="button"]').click() // <- wait half duration and show second toast
+
+    cy.get('h3').should('have.length', 2)
+
+    cy.wait(duration / 2)
+    cy.get('h3', {
+      timeout: 0,
+    }).should('have.length', 1) // <- wait half duration and close first toast
+
+    cy.wait(duration / 2)
+
+    cy.get('[data-testid="toast"]', {
+      timeout: 0,
+    }).should('not.exist') // <- wait half duration and close second toast */
+  })
 })

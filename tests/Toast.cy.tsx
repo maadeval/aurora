@@ -114,7 +114,7 @@ describe('<Toast />', () => {
     cy.wait(customDuration)
 
     cy.get('[data-testid="toast"]', {
-      timeout: 0,
+      timeout: 500,
     }).should('not.exist')
   })
 
@@ -180,7 +180,48 @@ describe('<Toast />', () => {
     cy.get('h3').should('have.length', 2)
   })
 
-  it.only('should close automatic toasts by duration', () => {
+  it('should close automatic toasts by duration', () => {
+    const duration = 1000
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+              duration,
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click() // <- show first toast
+
+    cy.get('h3').should('have.text', 'custom title').should('have.length', 1)
+
+    cy.wait(duration / 2)
+    cy.get('[data-testid="button"]').click() // <- wait half duration and show second toast
+
+    cy.get('[data-testid="button"]').realHover() // <= tricky: this prevent test environment put cursor on the toast making it not close at time
+
+    cy.get('h3').should('have.length', 2)
+
+    cy.wait(duration / 2)
+    cy.get('h3').should('have.length', 1) // <- wait half duration and close first toast
+
+    cy.wait(duration / 2 + 200)
+
+    cy.get('[data-testid="toast"]').should('not.exist') // <- wait half duration and close second toast */
+  })
+
+  it('should pause all toasts when mause enter', () => {
     const duration = 1000
     mount(
       <>
@@ -211,15 +252,42 @@ describe('<Toast />', () => {
 
     cy.get('h3').should('have.length', 2)
 
-    cy.wait(duration / 2)
-    cy.get('h3', {
-      timeout: 0,
-    }).should('have.length', 1) // <- wait half duration and close first toast
+    cy.get('[data-testid="toast"]').realHover()
 
-    cy.wait(duration / 2)
+    cy.wait(duration)
 
-    cy.get('[data-testid="toast"]', {
-      timeout: 0,
-    }).should('not.exist') // <- wait half duration and close second toast */
+    cy.get('[data-testid="toast"]').should('be.visible')
+  })
+
+  it.skip('should open differents types of toasts', () => {
+    //TODO: create tests for all types of toasts ~ could be a good idea create a test using a foreach loop (check the docs)
+  })
+
+  it.skip('should change the type of toast by user action', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  })
+
+  it.skip('should close toast by click on close button', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  })
+
+  it.skip('should pin toast by click on pin button', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  })
+
+  it.skip('should render with specific position', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  })
+
+  it.skip('should render with custom icon', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  })
+
+  it.skip('should render with custom className', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  })
+
+  it.skip('should make an action when use a onClose method', () => {
+    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
   })
 })

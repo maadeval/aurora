@@ -6,6 +6,7 @@ import { ToastTypes } from './ToastTypes'
 import { ToastCloseFunction } from './ToastCloseFunction'
 import { ToastTimeoutControl } from './ToastTimeoutControl'
 
+// TODO: is pinned not need duration
 export type Toast = {
   id: ToastId
   isPinned?: boolean

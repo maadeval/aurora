@@ -187,11 +187,23 @@ describe('<Toast />', () => {
       <>
         <Toast data-testid='toast' />
         <button
-          data-testid='button'
+          data-testid='button-success'
           onClick={() =>
             toast.success({
-              title: 'custom title',
+              title: 'custom title success',
               body: 'custom body',
+              duration,
+            })
+          }
+        >
+          click to open toast
+        </button>
+        <button
+          data-testid='button-error'
+          onClick={() =>
+            toast.error({
+              title: 'custom title error',
+              body: 'custom body error',
               duration,
             })
           }
@@ -201,25 +213,36 @@ describe('<Toast />', () => {
       </>
     )
 
+    const buttonSuccess = cy.get('[data-testid="button-success"]')
+    const buttonError = cy.get('[data-testid="button-error"]')
+
     cy.get('[data-testid="toast"]').should('not.exist')
 
-    cy.get('[data-testid="button"]').click() // <- show first toast
+    buttonSuccess.click()
+    cy.get('[data-type="success"]', {
+      timeout: 0,
+    }).should('be.visible')
+    cy.wait(duration / 2)
 
-    cy.get('h3').should('have.text', 'custom title').should('have.length', 1)
+    buttonError.click()
+    cy.get('[data-type="error"]', {
+      timeout: 0,
+    }).should('be.visible')
+    cy.get('[data-type="success"]', {
+      timeout: 0,
+    }).should('be.visible')
 
     cy.wait(duration / 2)
-    cy.get('[data-testid="button"]').click() // <- wait half duration and show second toast
-
-    cy.get('[data-testid="button"]').realHover() // <= tricky: this prevent test environment put cursor on the toast making it not close at time
-
-    cy.get('h3').should('have.length', 2)
+    cy.get('[data-type="error"]', {
+      timeout: 0,
+    }).should('be.visible')
+    cy.get('[data-type="success"]', {
+      timeout: 0,
+    }).should('not.exist')
 
     cy.wait(duration / 2)
-    cy.get('h3').should('have.length', 1) // <- wait half duration and close first toast
 
-    cy.wait(duration / 2 + 200)
-
-    cy.get('[data-testid="toast"]').should('not.exist') // <- wait half duration and close second toast */
+    cy.get('[data-testid="toast"]').should('not.exist')
   })
 
   it('should pause all toasts when mause enter', () => {

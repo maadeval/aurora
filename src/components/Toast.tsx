@@ -37,7 +37,18 @@ export const Toast = (props: Props) => {
     const handleUpdateToast = (toast: IToast) => {
       setToastState((prev) => {
         const newToast = new Map(prev)
-        newToast.set(toast.id, toast)
+
+        // if loading (private state used on promises) reset all toast config and set new
+        // if not loading, is because is a public update, so we need to merge the new config with the old one
+        const isLoadingType = toast.type === 'loading'
+        const newToastConfig = isLoadingType
+          ? toast
+          : {
+              ...prev.get(toast.id),
+              ...toast,
+            }
+
+        newToast.set(toast.id, newToastConfig)
         return newToast
       })
     }
@@ -116,9 +127,11 @@ export const Toast = (props: Props) => {
       onMouseLeave={handleResumeAllToast}
     >
       {[...toastState].map(([index, toast]) => (
-        <div key={index}>
+        <div data-type={toast.type} key={index}>
           {toast.showCloseButton && (
-            <button onClick={() => eventDelete.delete(index)}>❌</button>
+            <button title='close' onClick={() => eventDelete.delete(index)}>
+              ❌
+            </button>
           )}
           <h3>{toast.title}</h3>
           <p>{toast.body}</p>

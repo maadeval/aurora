@@ -7,4 +7,4 @@ export type ToastTypes =
   | 'loading'
   | 'promise'
 
-export type ToastTypesWithoutPromise = Exclude<ToastTypes, 'promise'>
+export type ToastTypesWithoutPromise = Omit<ToastTypes, 'promise'>

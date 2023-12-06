@@ -1,6 +1,7 @@
 import { toast } from '../src'
 import { Toast } from '../src/components/Toast'
 import { mount } from 'cypress/react18'
+import { ToastByTest } from './ToastByTest'
 
 describe('<Toast />', () => {
   it('render a toast with title', () => {
@@ -259,20 +260,187 @@ describe('<Toast />', () => {
     cy.get('[data-testid="toast"]').should('be.visible')
   })
 
-  it.skip('should open differents types of toasts', () => {
-    //TODO: create tests for all types of toasts ~ could be a good idea create a test using a foreach loop (check the docs)
+  it('should open differents types of toasts', () => {
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button-success'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+            })
+          }
+        >
+          click to open toast
+        </button>
+        <button
+          data-testid='button-warning'
+          onClick={() =>
+            toast.warning({
+              title: 'custom title',
+              body: 'custom body',
+            })
+          }
+        >
+          click to open toast
+        </button>
+        <button
+          data-testid='button-info'
+          onClick={() =>
+            toast.info({
+              title: 'custom title',
+              body: 'custom body',
+            })
+          }
+        >
+          click to open toast
+        </button>
+        <button
+          data-testid='button-error'
+          onClick={() =>
+            toast.error({
+              title: 'custom title',
+              body: 'custom body',
+            })
+          }
+        >
+          click to open toast
+        </button>
+        <button
+          data-testid='button-custom'
+          onClick={() =>
+            toast.custom({
+              title: 'custom title',
+              body: 'custom body',
+            })
+          }
+        >
+          click to open toast
+        </button>
+        <button
+          data-testid='button-promise'
+          onClick={() =>
+            toast.promise(
+              () => new Promise((resolve) => setTimeout(resolve, 1000)),
+              {
+                success: {
+                  title: 'custom title',
+                  body: 'custom body',
+                },
+                loading: {
+                  title: 'custom title',
+                  body: 'custom body',
+                },
+                error: {
+                  title: 'custom title',
+                  body: 'custom body',
+                },
+              }
+            )
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button-success"]').click()
+
+    cy.get('[data-type="success"]').should('be.visible')
+
+    cy.get('[data-testid="button-warning"]').click()
+
+    cy.get('[data-type="warning"]').should('be.visible')
+
+    cy.get('[data-testid="button-info"]').click()
+
+    cy.get('[data-type="info"]').should('be.visible')
+
+    cy.get('[data-testid="button-error"]').click()
+
+    cy.get('[data-type="error"]').should('be.visible')
+
+    cy.get('[data-testid="button-custom"]').click()
+
+    cy.get('[data-type="custom"]').should('be.visible')
+
+    cy.get('[data-testid="button-promise"]').click()
+
+    cy.get('[data-type="loading"]').should('be.visible')
   })
 
-  it.skip('should change the type of toast by user action', () => {
-    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  it('should change the type of toast by user action', () => {
+    mount(<ToastByTest />)
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button-success"]').click()
+
+    cy.get('[data-type="success"]').should('be.visible')
+
+    cy.get('[data-testid="button-error"]').click()
+
+    cy.get('[data-type="error"]').should('be.visible')
   })
 
-  it.skip('should close toast by click on close button', () => {
-    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  it('should close toast by click on close button', () => {
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+              showCloseButton: true,
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click()
+
+    cy.get('[title="close"]').click()
+
+    cy.get('[data-testid="toast"]').should('not.exist')
   })
 
-  it.skip('should pin toast by click on pin button', () => {
-    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  it('should pin toast by click on pin button', () => {
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+              isPinned: true,
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click()
+
+    cy.wait(1000)
+
+    cy.get('[data-testid="toast"]').should('be.visible')
   })
 
   it.skip('should render with specific position', () => {

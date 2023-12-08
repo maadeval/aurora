@@ -147,7 +147,8 @@ describe('<Toast />', () => {
 
     cy.get('[data-testid="toast"]').realHover()
 
-    cy.wait(customDuration)
+    cy.clock()
+    cy.tick(customDuration)
 
     cy.get('[data-testid="toast"]').should('be.visible')
   })
@@ -219,12 +220,14 @@ describe('<Toast />', () => {
     cy.get('[data-testid="toast"]').should('not.exist')
 
     buttonSuccess.click()
+    buttonSuccess.realHover()
     cy.get('[data-type="success"]', {
       timeout: 0,
     }).should('be.visible')
     cy.wait(duration / 2)
 
     buttonError.click()
+    buttonError.realHover()
     cy.get('[data-type="error"]', {
       timeout: 0,
     }).should('be.visible')
@@ -478,7 +481,31 @@ describe('<Toast />', () => {
     //TODO: could be a good idea do with TDD. This implementation is not done yet :)
   })
 
+  // TODO: change onClick function to a callback on the body. This improve the DX and could use a custom button to delete. And, Why?.. passing the toastId as argument, and then use a new method (not implement yet) called toast.delete(toastId)
   it.skip('should make an action when use a onClose method', () => {
-    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              isPinned: true,
+              body: (t) => {
+                return (
+                  <>
+                    <p>description</p>
+                    <button onClick={() => toast.delete(t.id)}>Close</button>
+                  </>
+                )
+              },
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
   })
 })

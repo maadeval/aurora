@@ -1,7 +1,8 @@
 import { ReactNode } from 'react'
+import { ToastPublicAPI } from './Toast'
 
 interface BodyWithoutTitle {
-  body: ReactNode
+  body: ReactNode | ((toast: Omit<ToastPublicAPI, 'body'>) => ReactNode)
   title?: never
 }
 
@@ -12,7 +13,7 @@ interface TitleWithoutBody {
 
 interface TitleAndBody {
   title: string
-  body: ReactNode
+  body: ReactNode | ((toast: Omit<ToastPublicAPI, 'body'>) => ReactNode)
 }
 
 export type ToastContent = TitleAndBody | TitleWithoutBody | BodyWithoutTitle

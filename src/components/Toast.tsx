@@ -133,8 +133,10 @@ export const Toast = (props: Props) => {
               ❌
             </button>
           )}
-          <h3>{toast.title}</h3>
-          <p>{toast.body}</p>
+          {toast.title && <h3>{toast.title}</h3>}
+          {typeof toast.body === 'string' && <p>{toast.body}</p>}
+          {typeof toast.body === 'function' && toast.body(toast)}
+          {typeof toast.body === 'object' && toast.body}
         </div>
       ))}
     </div>

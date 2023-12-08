@@ -481,8 +481,7 @@ describe('<Toast />', () => {
     //TODO: could be a good idea do with TDD. This implementation is not done yet :)
   })
 
-  // TODO: change onClick function to a callback on the body. This improve the DX and could use a custom button to delete. And, Why?.. passing the toastId as argument, and then use a new method (not implement yet) called toast.delete(toastId)
-  it.skip('should make an action when use a onClose method', () => {
+  it('should make an action when use a onClose method', () => {
     mount(
       <>
         <Toast data-testid='toast' />
@@ -496,7 +495,12 @@ describe('<Toast />', () => {
                 return (
                   <>
                     <p>description</p>
-                    <button onClick={() => toast.delete(t.id)}>Close</button>
+                    <button
+                      data-testid='close-button'
+                      onClick={() => toast.delete(t.id)}
+                    >
+                      Close
+                    </button>
                   </>
                 )
               },
@@ -507,5 +511,15 @@ describe('<Toast />', () => {
         </button>
       </>
     )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click()
+
+    cy.get('[data-testid="toast"]').should('exist')
+
+    cy.get('[data-testid="close-button"]').click()
+
+    cy.get('[data-testid="toast"]').should('not.exist')
   })
 })

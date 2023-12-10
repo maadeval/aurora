@@ -31,7 +31,7 @@ jobs:
           cache: 'pnpm'
           node-version: '18'
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
       - name: 🧪 Run tests
         run: pnpm run test
   linter:

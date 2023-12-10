@@ -18,7 +18,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest"
+    "test": "cypress run --component --browser chrome",
+    "test:open": "cypress open --component"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -33,16 +34,15 @@
     "@storybook/react": "^7.5.3",
     "@storybook/react-vite": "^7.5.3",
     "@storybook/testing-library": "^0.2.2",
-    "@testing-library/dom": "9.3.3",
-    "@testing-library/jest-dom": "6.1.4",
-    "@testing-library/react": "14.1.2",
-    "@testing-library/user-event": "14.5.1",
+    "@testing-library/cypress": "10.0.1",
     "@types/node": "20.9.3",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "cypress": "13.6.0",
+    "cypress-real-events": "1.11.0",
     "eslint": "^8.54.0",
     "eslint-plugin-jest-dom": "5.1.0",
     "eslint-plugin-react": "7.33.2",
@@ -55,8 +55,7 @@
     "react-dom": "^18.2.0",
     "storybook": "^7.5.3",
     "typescript": "^5.2.2",
-    "vite": "^5.0.0",
-    "vite-plugin-dts": "3.6.3",
-    "vitest": "0.34.6"
+    "vite": "^5.0.2",
+    "vite-plugin-dts": "3.6.3"
   }
 }

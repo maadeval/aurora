@@ -1,1 +1,2 @@
-export { Toast } from './Toast'
+export { Toast } from './components/Toast'
+export { toast } from './core'

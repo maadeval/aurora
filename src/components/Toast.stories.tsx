@@ -161,7 +161,19 @@ function Component() {
         onClick={() => {
           const id = toast.success({
             title: 'custom title',
-            body: 'custom body',
+            body: (t) => {
+              return (
+                <>
+                  <p>description</p>
+                  <button onClick={() => toast.delete(t.id)}>close</button>
+                  <pre>
+                    <code>
+                      {JSON.stringify('const element = "dsds"', null, 2)}
+                    </code>
+                  </pre>
+                </>
+              )
+            },
             isPinned: true,
           })
 

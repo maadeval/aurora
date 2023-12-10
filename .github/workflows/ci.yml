@@ -30,12 +30,16 @@ jobs:
         with:
           cache: 'pnpm'
           node-version: '18'
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: Cache Cypress binary
         uses: actions/cache@v3
         with:
-          key: cypress-binary-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          path: |
-            ~/.cache/Cypress
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
       - name: 🧪 Run tests

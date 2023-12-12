@@ -41,7 +41,7 @@ export const Success: Story = {
         <Toast />
         <button
           onClick={() => {
-            eventCreate.success({
+            toast.success({
               body: 'success',
             })
           }}

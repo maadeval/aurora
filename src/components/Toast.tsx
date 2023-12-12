@@ -90,7 +90,7 @@ export const Toast = (props: Props) => {
           duration: toast.duration! - (Date.now() - toast.timestamp!),
         })
 
-        clearTimeout(toast.timeoutId)
+        window.clearTimeout(toast.timeoutId)
       }
       return newToasts
     })

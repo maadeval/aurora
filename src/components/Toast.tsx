@@ -12,6 +12,8 @@ type Props = Omit<
   'onMouseEnter' | 'onMouseLeave'
 >
 
+const IS_DEVELOPMENT = import.meta.env.MODE === 'development'
+
 export const Toast = (props: Props) => {
   const [toastState, setToastState] = useState(new Map<ToastId, IToast>())
 
@@ -100,49 +102,72 @@ export const Toast = (props: Props) => {
     setToastState((prev) => {
       const newToasts = new Map(prev)
       for (const [index, toast] of newToasts) {
-        /* const hasTimeoutId = toast.timeoutId != null
-        const hasTimestamp = toast.timestamp != null
-        const hasDuration = toast.duration != null
-        if (!hasTimeoutId && !hasTimestamp && !hasDuration) continue */
-        console.log({
-          toast,
-        })
+        // check if loading or pinned
+        const isLoadingType = toast.type === 'loading'
+        const isPinned = toast.isPinned === true
+        if (isLoadingType || isPinned || !toast.duration) continue
+
         newToasts.set(index, {
           ...toast,
           timeoutId: startTimeoutToAutoDelete({
             id: index,
-            duration: toast.duration!,
+            duration: toast.duration,
           }),
           timestamp: Date.now(),
         })
-
-        console.log({ newToasts })
       }
       return newToasts
     })
   }
 
-  if (toastState.size === 0) return null
+  // TODO: will apply
+  // if (toastState.size === 0) return null
 
   return (
-    <div
-      {...props}
-      onMouseEnter={handlePauseAllToast}
-      onMouseLeave={handleResumeAllToast}
-    >
-      {[...toastState].map(([index, toast]) => (
-        <div data-type={toast.type} key={index}>
-          {toast.showCloseButton && (
-            <button title='close' onClick={() => eventDelete.delete(index)}>
-              ❌
-            </button>
-          )}
-          {toast.title && <h3>{toast.title}</h3>}
-          {typeof toast.body === 'string' && <p>{toast.body}</p>}
-          {typeof toast.body === 'function' && toast.body(toast)}
-          {typeof toast.body === 'object' && toast.body}
+    <>
+      {IS_DEVELOPMENT && (
+        <aside
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            right: 0,
+            zIndex: 9999,
+            background: '#16161690',
+            padding: '10px',
+            borderRadius: '10px',
+            color: '#fff',
+          }}
+        >
+          {[...toastState].map(([index, toast]) => (
+            <div key={index}>
+              <pre>
+                <code>{JSON.stringify(toast, null, 2)}</code>
+              </pre>
+            </div>
+          ))}
+        </aside>
+      )}
+      {toastState.size === 0 ? null : (
+        <div
+          {...props}
+          onMouseEnter={handlePauseAllToast}
+          onMouseLeave={handleResumeAllToast}
+        >
+          {[...toastState].map(([index, toast]) => (
+            <div data-type={toast.type} key={index}>
+              {toast.showCloseButton && (
+                <button title='close' onClick={() => eventDelete.delete(index)}>
+                  ❌
+                </button>
+              )}
+              {toast.title && <h3>{toast.title}</h3>}
+              {typeof toast.body === 'string' && <p>{toast.body}</p>}
+              {typeof toast.body === 'function' && toast.body(toast)}
+              {typeof toast.body === 'object' && toast.body}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   )
 }

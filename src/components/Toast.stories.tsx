@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-
-import { Toast } from './Toast'
-import { toast } from '../index'
-import { eventCreate } from '../core/eventCreate'
+import { Toast } from '../index.ts'
+import { toast } from '../index.ts'
 import { useState } from 'react'
 import { ToastId } from '../types/ToastId'
 
@@ -64,7 +62,7 @@ export const Basic: Story = {
         <Toast />
         <button
           onClick={() => {
-            eventCreate.promise<Data>(getUsers, {
+            toast.promise<Data>(getUsers, {
               error: {
                 title: 'Error',
               },
@@ -92,7 +90,7 @@ export const All: Story = {
         <Toast />
         <button
           onClick={() =>
-            eventCreate.success({
+            toast.success({
               title: 'success action',
               showCloseButton: true,
               duration: 15000,
@@ -103,7 +101,7 @@ export const All: Story = {
         </button>
         <button
           onClick={() =>
-            eventCreate.error({
+            toast.error({
               title: 'error action',
               showCloseButton: true,
               duration: 15000,
@@ -114,7 +112,7 @@ export const All: Story = {
         </button>
         <button
           onClick={() =>
-            eventCreate.info({
+            toast.info({
               title: 'info action',
               showCloseButton: true,
             })
@@ -124,7 +122,7 @@ export const All: Story = {
         </button>
         <button
           onClick={() => {
-            eventCreate.promise<Data>(examplePromise, {
+            toast.promise<Data>(examplePromise, {
               error: {
                 title: 'Error',
                 showCloseButton: true,

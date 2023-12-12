@@ -11,13 +11,7 @@ enum CUSTOM_EVENT_CREATE_NAME {
 
 function subscribe(callback: (toast: Toast) => void) {
   const fn = ({ detail }: CustomEventDetail) => callback(detail)
-  document.addEventListener(
-    CUSTOM_EVENT_CREATE_NAME.NAME,
-    fn as EventListener,
-    {
-      capture: true,
-    }
-  )
+  document.addEventListener(CUSTOM_EVENT_CREATE_NAME.NAME, fn as EventListener)
 
   return fn
 }

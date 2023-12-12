@@ -100,11 +100,13 @@ export const Toast = (props: Props) => {
     setToastState((prev) => {
       const newToasts = new Map(prev)
       for (const [index, toast] of newToasts) {
-        const hasTimeoutId = toast.timeoutId != null
+        /* const hasTimeoutId = toast.timeoutId != null
         const hasTimestamp = toast.timestamp != null
         const hasDuration = toast.duration != null
-        if (!hasTimeoutId && !hasTimestamp && !hasDuration) continue
-
+        if (!hasTimeoutId && !hasTimestamp && !hasDuration) continue */
+        console.log({
+          toast,
+        })
         newToasts.set(index, {
           ...toast,
           timeoutId: startTimeoutToAutoDelete({
@@ -113,6 +115,8 @@ export const Toast = (props: Props) => {
           }),
           timestamp: Date.now(),
         })
+
+        console.log({ newToasts })
       }
       return newToasts
     })

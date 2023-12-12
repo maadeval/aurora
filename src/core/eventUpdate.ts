@@ -7,9 +7,7 @@ const CUSTOM_EVENT_UPDATE_NAME = 'custom__toast__event__update'
 
 function subscribe(callback: (toast: Toast) => void) {
   const fn = ({ detail }: CustomEventDetail) => callback(detail)
-  document.addEventListener(CUSTOM_EVENT_UPDATE_NAME, fn as EventListener, {
-    capture: true,
-  })
+  document.addEventListener(CUSTOM_EVENT_UPDATE_NAME, fn as EventListener)
 
   return fn
 }

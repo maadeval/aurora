@@ -5,9 +5,7 @@ const CUSTOM_EVENT_DELETE_NAME = 'custom__toast__event__delete'
 
 function subscribe(callback: (toast: ToastId) => void) {
   const fn = ({ detail }: CustomEventDetailOnlyId) => callback(detail.id)
-  document.addEventListener(CUSTOM_EVENT_DELETE_NAME, fn as EventListener, {
-    capture: true,
-  })
+  document.addEventListener(CUSTOM_EVENT_DELETE_NAME, fn as EventListener)
 
   return fn
 }

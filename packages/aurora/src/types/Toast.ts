@@ -1,7 +1,6 @@
 import { ToastContent } from './ToastContent'
 import { ReactNode } from 'react'
 import { ToastId } from './ToastId'
-import { ToastPosition } from './ToastPosition'
 import { ToastTypes } from './ToastTypes'
 import { ToastTimeoutControl } from './ToastTimeoutControl'
 
@@ -10,7 +9,6 @@ export type Toast = {
   id: ToastId
   isPinned?: boolean
   icon?: ReactNode
-  position?: ToastPosition
   type: ToastTypes
   showCloseButton?: boolean
   duration?: number

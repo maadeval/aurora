@@ -11,6 +11,12 @@ export interface CustomEventDetailOnlyId extends Event {
   }
 }
 
+export interface CustomEventDetailToastsList extends Event {
+  detail: {
+    toasts: Map<ToastId, Toast>
+  }
+}
+
 export interface CreateToastPromise<T> {
   loading: ToastWithoutIdAndType
   success: ToastWithoutIdAndType | ((data: T) => ToastWithoutIdAndType)

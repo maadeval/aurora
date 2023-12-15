@@ -34,6 +34,5 @@ const deleteToast = (id: ToastId) => emitEventDelete(id)
 export const eventDelete = {
   subscribe,
   unsubscribe,
-  emitEventDelete,
   delete: deleteToast,
 }

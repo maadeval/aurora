@@ -8,9 +8,7 @@
     "deploy": {
       "dependsOn": ["build", "test", "lint"]
     },
-    "test": {
-      "dependsOn": ["^build"]
-    },
+    "test": {},
     "lint": {},
     "dev": {
       "cache": false,

@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "build": "turbo build",
+    "build": "turbo build --cache-dir=.turbo",
     "dev": "turbo dev",
+    "lint": "turbo lint",
     "test": "turbo test"
   },
   "keywords": [],

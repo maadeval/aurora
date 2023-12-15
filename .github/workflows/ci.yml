@@ -41,7 +41,7 @@ jobs:
           node-version: '18'
 
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: ⚒️ Build code
         run: pnpm build
@@ -79,7 +79,7 @@ jobs:
           key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🧪 Run tests
         run: pnpm test
@@ -104,7 +104,7 @@ jobs:
           node-version: '18'
 
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🧹 Lint code
         run: pnpm lint

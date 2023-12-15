@@ -14,6 +14,9 @@ importers:
 
   examples/vite-react-ts:
     dependencies:
+      '@madeval/aurora':
+        specifier: workspace:*
+        version: link:../../packages/aurora
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -21,9 +24,6 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@madeval/aurora':
-        specifier: workspace:*
-        version: link:../../packages/aurora
       '@types/react':
         specifier: ^18.2.43
         version: 18.2.43

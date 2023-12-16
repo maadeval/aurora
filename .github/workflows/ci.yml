@@ -1,9 +1,8 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: ['main']
   pull_request:
     types: [opened, synchronize]
 
@@ -12,32 +11,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: 🧪 Run tests
+  build:
+    name: Build and Test
+    timeout-minutes: 15
     runs-on: ubuntu-latest
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+    #  TURBO_REMOTE_ONLY: true
+
     steps:
-      - name: 📥 Checkout
+      - name: Check out code
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
-      - name: Install Node and dependencies
-        uses: ./.github/actions/install-dependencies
-
-      - name: 🧪 Run tests
-        run: npm run test
-
-  linter:
-    name: 🧹 Lint code
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
+          node-version: 18
+          cache: 'npm'
 
-      - name: Install Node and dependencies
-        uses: ./.github/actions/install-dependencies
+      - name: Install dependencies
+        run: npm install
 
-      - name: 🧹 Lint code
-        run: npm run lint
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test

@@ -1,37 +1,19 @@
 name: Install Node and package dependencies
 description: 'Install Node dependencies with pnpm'
-inputs:
-  TURBO_TOKEN:
-    description: 'Turborepo token'
-  TURBO_TEAM:
-    description: 'Turborepo team'
-  BUILD:
-    description: 'Build packages'
-    default: 'default'
 
 runs:
   using: 'composite'
   steps:
-    - uses: pnpm/action-setup@v2.2.4
+    - name: 📥 Checkout
+      uses: actions/checkout@v3
       with:
-        version: 8.7.4
-        run_install: false
-    - name: Get pnpm cache directory
-      id: pnpm-cache-dir
-      shell: bash
-      run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
-      id: pnpm-cache
-      with:
-        path: |
-          ${{ steps.pnpm-cache-dir.outputs.dir }}
-          ~/.cache/Cypress
-        key: ${{ runner.os }}-node-${{ hashFiles('pnpm-lock.yaml') }}
-        restore-keys: ${{ runner.os }}-node-
-    - name: Use Node.js 16
+        fetch-depth: 2
+
+    - name: Use Node.js 18
       uses: actions/setup-node@v3
       with:
-        node-version: 16
-    - shell: bash
-      name: Install packages
-      run: pnpm install --frozen-lockfile
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install packages
+      run: npm ci

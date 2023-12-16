@@ -17,7 +17,7 @@
     "build": "vite build",
     "type-check": "tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "dev": "WATCH='true' pnpm run build -- --watch",
+    "dev": "WATCH='true' npm run build -- --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "cypress run --component --browser chrome",

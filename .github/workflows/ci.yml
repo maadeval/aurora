@@ -12,14 +12,9 @@ concurrency:
 
 jobs:
   build:
-    name: Build and Test
+    name: Testing and Linting
     timeout-minutes: 15
     runs-on: ubuntu-latest
-    # To use Remote Caching, uncomment the next lines and follow the steps below.
-    # env:
-    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-    #  TURBO_REMOTE_ONLY: true
 
     steps:
       - name: Check out code
@@ -33,11 +28,8 @@ jobs:
           node-version: 18
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: 📬 Install dependencies
         run: npm install
 
-      - name: Build
-        run: npm run build
-
-      - name: Test
+      - name: 🧑‍🔬 Component tests
         run: npm run test

@@ -6,13 +6,14 @@ import { eventUpdate } from '../core/eventUpdate'
 import { ToastId } from '../types/ToastId'
 import { eventDelete } from '../core/eventDelete'
 import { startTimeoutToAutoDelete } from '../core/eventHelpers'
+import { ToastPosition } from '../types/ToastPosition'
+import style from './Toast.module.css'
 
-type Props = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  'onMouseEnter' | 'onMouseLeave'
->
+type Props = {
+  position?: ToastPosition
+} & Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'>
 
-export const Toast = (props: Props) => {
+export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
   const [toastState, setToastState] = useState(new Map<ToastId, IToast>())
 
   /* set new toast */
@@ -27,9 +28,7 @@ export const Toast = (props: Props) => {
 
     eventCreate.subscribe(handleCreateToast)
 
-    return () => {
-      eventCreate.unsubscribe(handleCreateToast)
-    }
+    return () => eventCreate.unsubscribe(handleCreateToast)
   }, [])
 
   /* update existing toast */
@@ -55,9 +54,7 @@ export const Toast = (props: Props) => {
 
     eventUpdate.subscribe(handleUpdateToast)
 
-    return () => {
-      eventUpdate.unsubscribe(handleUpdateToast)
-    }
+    return () => eventUpdate.unsubscribe(handleUpdateToast)
   }, [])
 
   /* delete existing toast */
@@ -72,50 +69,42 @@ export const Toast = (props: Props) => {
 
     eventDelete.subscribe(handleDeleteToast)
 
-    return () => {
-      eventDelete.unsubscribe(handleDeleteToast)
-    }
+    return () => eventDelete.unsubscribe(handleDeleteToast)
   }, [])
 
   const handlePauseAllToast = () => {
-    setToastState((prev) => {
-      const newToasts = new Map(prev)
-      for (const [index, toast] of newToasts) {
-        const hasTimeoutId = toast.timeoutId != null
-        if (!hasTimeoutId) continue
+    for (const [, toast] of toastState) {
+      const hasTimeoutId = toast.timeoutId != null
+      if (!hasTimeoutId) continue
 
-        newToasts.set(index, {
-          ...toast,
-          timeoutId: undefined,
-          duration: toast.duration! - (Date.now() - toast.timestamp!),
-        })
+      eventUpdate[
+        toast.type as 'success' | 'error' | 'warning' | 'info' | 'custom'
+      ](toast.id, {
+        timeoutId: undefined,
+        duration: toast.duration! - (Date.now() - toast.timestamp!),
+      })
 
-        clearTimeout(toast.timeoutId)
-      }
-      return newToasts
-    })
+      clearTimeout(toast.timeoutId)
+    }
   }
 
   const handleResumeAllToast = () => {
-    setToastState((prev) => {
-      const newToasts = new Map(prev)
-      for (const [index, toast] of newToasts) {
-        const hasTimeoutId = toast.timeoutId != null
-        const hasTimestamp = toast.timestamp != null
-        const hasDuration = toast.duration != null
-        if (!hasTimeoutId && !hasTimestamp && !hasDuration) continue
+    for (const [index, toast] of toastState) {
+      const hasTimeoutId = toast.timeoutId != null
+      const hasTimestamp = toast.timestamp != null
+      const hasDuration = toast.duration != null
+      if (!hasTimeoutId && !hasTimestamp && !hasDuration) continue
 
-        newToasts.set(index, {
-          ...toast,
-          timeoutId: startTimeoutToAutoDelete({
-            id: index,
-            duration: toast.duration!,
-          }),
-          timestamp: Date.now(),
-        })
-      }
-      return newToasts
-    })
+      eventUpdate[
+        toast.type as 'success' | 'error' | 'warning' | 'info' | 'custom'
+      ](toast.id, {
+        timeoutId: startTimeoutToAutoDelete({
+          id: index,
+          duration: toast.duration!,
+        }),
+        timestamp: Date.now(),
+      })
+    }
   }
 
   if (toastState.size === 0) return null
@@ -123,6 +112,7 @@ export const Toast = (props: Props) => {
   return (
     <div
       {...props}
+      className={style[position]}
       onMouseEnter={handlePauseAllToast}
       onMouseLeave={handleResumeAllToast}
     >

@@ -1,0 +1,64 @@
+{
+  "name": "@madeval/aurora",
+  "author": {
+    "name": "Madeval",
+    "email": "alvarez.fing@gmail.com"
+  },
+  "license": "MIT",
+  "version": "0.0.12-alpha",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/aurora.umd.cjs",
+  "module": "./dist/aurora.js",
+  "types": "./dist/src/index.d.ts",
+  "scripts": {
+    "build": "vite build",
+    "type-check": "tsc",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "dev": "WATCH='true' npm run build -- --watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "cypress run --component --browser chrome",
+    "test:open": "cypress open --component --browser chrome"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.5.3",
+    "@storybook/addon-interactions": "^7.5.3",
+    "@storybook/addon-links": "^7.5.3",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.3",
+    "@storybook/react": "^7.5.3",
+    "@storybook/react-vite": "^7.5.3",
+    "@storybook/testing-library": "^0.2.2",
+    "@testing-library/cypress": "10.0.1",
+    "@types/node": "20.9.3",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "cypress": "13.6.0",
+    "cypress-real-events": "1.11.0",
+    "eslint": "^8.54.0",
+    "eslint-plugin-jest-dom": "5.1.0",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
+    "eslint-plugin-storybook": "0.6.15",
+    "eslint-plugin-testing-library": "6.2.0",
+    "jsdom": "22.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.5.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.2",
+    "vite-plugin-css-injected-by-js": "3.3.0",
+    "vite-plugin-dts": "3.6.3"
+  }
+}

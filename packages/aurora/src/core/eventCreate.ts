@@ -1,29 +1,31 @@
 import { Toast, ToastWithoutIdAndType } from '../types/Toast'
+import { ToastId } from '../types/ToastId'
 import { ToastTypes } from '../types/ToastTypes'
 import { handleGetTimingProps } from './eventHelpers'
 import { CreateToastPromise, CustomEventDetail } from './eventTypes'
 import { eventUpdate } from './eventUpdate'
 
-const CUSTOM_EVENT_CREATE_NAME = 'custom__toast__event__create'
+enum CUSTOM_EVENT_CREATE_NAME {
+  NAME = 'custom__toast__event__create',
+}
 
 function subscribe(callback: (toast: Toast) => void) {
   const fn = ({ detail }: CustomEventDetail) => callback(detail)
-  document.addEventListener(CUSTOM_EVENT_CREATE_NAME, fn as EventListener)
+  document.addEventListener(CUSTOM_EVENT_CREATE_NAME.NAME, fn as EventListener)
 
   return fn
 }
 
 function unsubscribe(fn: (toast: Toast) => void) {
   document.removeEventListener(
-    CUSTOM_EVENT_CREATE_NAME,
+    CUSTOM_EVENT_CREATE_NAME.NAME,
     fn as unknown as EventListener
   )
 }
 
 function emitEventCreate(type: ToastTypes) {
-  return (toast: ToastWithoutIdAndType) => {
+  return (toast: ToastWithoutIdAndType): ToastId => {
     const id = window.crypto.randomUUID()
-
     // check is title and body is empty
     if (!toast.title && !toast.body)
       throw new Error('Title or body is required')
@@ -34,7 +36,7 @@ function emitEventCreate(type: ToastTypes) {
       type,
     })
 
-    const event = new CustomEvent(CUSTOM_EVENT_CREATE_NAME, {
+    const event = new CustomEvent(CUSTOM_EVENT_CREATE_NAME.NAME, {
       detail: {
         ...toast,
         ...timingProps,
@@ -47,16 +49,17 @@ function emitEventCreate(type: ToastTypes) {
   }
 }
 
-const success = (config: ToastWithoutIdAndType) =>
+const success = (config: ToastWithoutIdAndType): ToastId =>
   emitEventCreate('success')(config)
-const error = (config: ToastWithoutIdAndType) =>
+const error = (config: ToastWithoutIdAndType): ToastId =>
   emitEventCreate('error')(config)
-const warning = (config: ToastWithoutIdAndType) =>
+const warning = (config: ToastWithoutIdAndType): ToastId =>
   emitEventCreate('warning')(config)
-const info = (config: ToastWithoutIdAndType) => emitEventCreate('info')(config)
-const loading = (config: ToastWithoutIdAndType) =>
+const info = (config: ToastWithoutIdAndType): ToastId =>
+  emitEventCreate('info')(config)
+const loading = (config: ToastWithoutIdAndType): ToastId =>
   emitEventCreate('loading')(config)
-const custom = (config: ToastWithoutIdAndType) =>
+const custom = (config: ToastWithoutIdAndType): ToastId =>
   emitEventCreate('custom')(config)
 const promise = <T>(
   callback: (props?: T) => Promise<T>,

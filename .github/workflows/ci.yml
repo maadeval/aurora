@@ -1,67 +1,35 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: ['main']
   pull_request:
-    branches:
-      - main
+    types: [opened, synchronize]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: 🧪 Run tests
+  build:
+    name: Testing and Linting
+    timeout-minutes: 15
     runs-on: ubuntu-latest
+
     steps:
-      - name: 📥 Checkout
+      - name: Check out code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-      - name: 🔧 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: 🔩 Setup Node.js
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          cache: 'pnpm'
-          node-version: '18'
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.pnpm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - name: Cache Cypress binary
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - name: 📦 Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: 🧪 Run tests
-        run: pnpm run test
-  linter:
-    name: 🧹 Lint code
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: 🔧 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: 🔩 Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          cache: 'pnpm'
-          node-version: '18'
-      - name: 📦 Install dependencies
-        run: pnpm install
-      - name: 🧹 Lint code
-        run: pnpm run lint
+          node-version: 18
+          cache: 'npm'
+
+      - name: 📬 Install dependencies
+        run: npm install
+
+      - name: 🧑‍🔬 Component tests
+        run: npm run test

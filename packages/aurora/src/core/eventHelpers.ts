@@ -9,7 +9,7 @@ export function startTimeoutToAutoDelete({
   id: ToastId
   duration: number
 }) {
-  const timeoutId = setTimeout(() => {
+  const timeoutId = window.setTimeout(() => {
     eventDelete.delete(id)
   }, duration)
 

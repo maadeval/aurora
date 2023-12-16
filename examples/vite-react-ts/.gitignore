@@ -1,6 +1,3 @@
-.turbo
-build/**
-.next/**
 # Logs
 logs
 *.log

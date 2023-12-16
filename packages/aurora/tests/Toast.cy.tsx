@@ -2,6 +2,7 @@ import { toast } from '../src'
 import { Toast } from '../src/components/Toast'
 import { mount } from 'cypress/react18'
 import { ToastByTest } from './ToastByTest'
+import { ToastPosition } from '../src/types/ToastPosition'
 
 describe('<Toast />', () => {
   it('render a toast with title', () => {
@@ -469,8 +470,86 @@ describe('<Toast />', () => {
     cy.get('[data-testid="toast"]').should('be.visible')
   })
 
-  it.skip('should render with specific position', () => {
-    //TODO: could be a good idea do with TDD. This implementation is not done yet :)
+  it('should render with specific position', () => {
+    cy.wrap([
+      'top-right',
+      'top-left',
+      'bottom-right',
+      'bottom-left',
+      'top-center',
+      'bottom-center',
+    ]).each((position: ToastPosition) => {
+      const [positionY, positionX] = position.split('-')
+      mount(
+        <>
+          <Toast position={position} data-testid='toast' />
+          <button
+            data-testid='button'
+            onClick={() =>
+              toast.success({
+                title: 'custom title',
+                body: 'custom body',
+                isPinned: true,
+              })
+            }
+          >
+            click to open toast
+          </button>
+        </>
+      )
+
+      cy.get('[data-testid="toast"]').should('not.exist')
+
+      cy.get('[data-testid="button"]').click()
+
+      cy.get('[data-testid="toast"]').should('be.visible')
+
+      if (positionX === 'center') {
+        cy.get('[data-testid="toast"]').should(
+          'have.css',
+          'left',
+          Cypress.config('viewportWidth') / 2 + 'px'
+        )
+        cy.get('[data-testid="toast"]').should(([$el]) => {
+          expect($el).to.have.css(
+            'transform',
+            `matrix(1, 0, 0, 1, -${$el.clientWidth / 2}, 0)`
+          )
+        })
+      } else {
+        cy.get('[data-testid="toast"]').should('have.css', positionY, '0px')
+        cy.get('[data-testid="toast"]').should('have.css', positionX, '0px')
+      }
+    })
+  })
+
+  it('should render with bottom-right position by default', () => {
+    mount(
+      <>
+        <Toast data-testid='toast' />
+        <button
+          data-testid='button'
+          onClick={() =>
+            toast.success({
+              title: 'custom title',
+              body: 'custom body',
+              isPinned: true,
+            })
+          }
+        >
+          click to open toast
+        </button>
+      </>
+    )
+
+    cy.get('[data-testid="toast"]').should('not.exist')
+
+    cy.get('[data-testid="button"]').click()
+
+    cy.get('[data-testid="toast"]').should('be.visible')
+
+    cy.get('[data-testid="toast"]').should('have.css', 'bottom', '0px')
+    cy.get('[data-testid="toast"]').should('have.css', 'right', '0px')
   })
 
   it.skip('should render with custom icon', () => {

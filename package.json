@@ -1,7 +1,7 @@
 {
-  "name": "waves",
+  "name": "aurora",
   "version": "0.0.0",
-  "description": "",
+  "description": "Toast library for React with no dependencies and fully customizable",
   "workspaces": [
     "packages/*",
     "examples/*"

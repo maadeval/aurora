@@ -42,6 +42,8 @@ jobs:
           key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Cypress install
+        run: cypress install
       - name: 🧪 Run tests
         run: pnpm run test
   linter:
@@ -62,6 +64,6 @@ jobs:
           cache: 'pnpm'
           node-version: '18'
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
       - name: 🧹 Lint code
         run: pnpm run lint

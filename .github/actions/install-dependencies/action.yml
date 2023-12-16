@@ -10,5 +10,6 @@ runs:
         node-version: 18
         cache: 'npm'
 
-    - name: Install packages
+    - shell: bash
+      name: Install packages
       run: npm ci

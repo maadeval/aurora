@@ -1,53 +1,42 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: ['main']
   pull_request:
-    branches:
-      - main
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    types: [opened, synchronize]
 
 jobs:
-  test:
-    name: 🧪 Run tests
+  build:
+    name: Build and Test
+    timeout-minutes: 15
     runs-on: ubuntu-latest
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    # env:
+    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
     steps:
-      - name: 📥 Checkout
+      - name: Check out code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 2
 
-      - name: 🔩 Setup Node.js
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.32.2
+
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          cache: 'npm'
-          node-version: '18'
+          node-version: 18
+          cache: 'pnpm'
 
-      - name: 📦 Install dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: 🧪 Run tests
-        run: npm run test
-  linter:
-    name: 🧹 Lint code
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - name: Build
+        run: pnpm build
 
-      - name: 🔩 Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          cache: 'npm'
-          node-version: '18'
-      - name: 📦 Install dependencies
-        run: pnpm ci
-      - name: 🧹 Lint code
-        run: npm run lint
+      - name: Test
+        run: pnpm test

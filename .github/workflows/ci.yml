@@ -1,9 +1,8 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: ['main']
   pull_request:
     types: [opened, synchronize]
 
@@ -13,103 +12,34 @@ concurrency:
 
 jobs:
   build:
-    name: ⚒️ Build code
+    name: Build and Test
+    timeout-minutes: 5
     runs-on: ubuntu-latest
+
     steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v3
+      - name: Check out code
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2
 
-      - name: 🔧 Setup pnpm
-        uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 8
+          version: 6.32.2
 
-      - name: Cache turbo build setup
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
-      - name: 🔩 Setup Node.js
+      - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
+          node-version: 18
           cache: 'pnpm'
-          node-version: '18'
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: pnpm install
 
-      - name: ⚒️ Build code
+      - name: Build
         run: pnpm build
 
-  test:
-    name: 🧪 Run tests
-    timeout-minutes: 3
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: 🔧 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Cache turbo build setup
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
-      - name: 🔩 Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'pnpm'
-
-      - name: 📦 Install dependencies
-        run: pnpm install
-
-      - name: 🧪 Run tests
+      - name: Test
         run: pnpm test
-  linter:
-    name: 🧹 Lint code
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: 🔧 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Cache turbo build setup
-        uses: actions/cache@v3
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
-      - name: 🔩 Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          cache: 'pnpm'
-          node-version: '18'
-
-      - name: 📦 Install dependencies
-        run: pnpm install
-
-      - name: 🧹 Lint code
+      - name: Lint
         run: pnpm lint

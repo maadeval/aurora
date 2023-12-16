@@ -20,8 +20,8 @@
     "dev": "WATCH='true' npm run build -- --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "cypress run --component --browser chrome --config-file tests/cypress.config.js",
-    "test:open": "cypress open --component"
+    "test": "cypress run --component --browser chrome",
+    "test:open": "cypress open --component --browser chrome"
   },
   "peerDependencies": {
     "react": "^18.2.0",

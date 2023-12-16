@@ -24,8 +24,26 @@ jobs:
       - name: Install Node and dependencies
         uses: ./.github/actions/install-dependencies
 
+      - name: Check if the pnpm lockfile changed
+        id: changed-lockfile
+        uses: tj-actions/changed-files@v34
+        with:
+          files: pnpm-lock.yaml
+      # * Determine a pnpm filter argument for packages that have been modified.
+      # * If the lockfile has changed, we don't filter anything in order to run all the e2e tests.
+      - name: filter packages
+        id: filter-packages
+        if: steps.changed-lockfile.outputs.any_changed != 'true' && github.event_name == 'pull_request'
+        run: echo "filter=${{ format('--filter=...[origin/{0}]', github.base_ref) }}" >> $GITHUB_OUTPUT
+      # * List packagesthat has an `e2e` script, except the root, and return an array of their name and path
+      # * In a PR, only include packages that have been modified, and their dependencies
+
       - name: 🧪 Run tests
         run: pnpm run test
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
   linter:
     name: 🧹 Lint code
     runs-on: ubuntu-latest

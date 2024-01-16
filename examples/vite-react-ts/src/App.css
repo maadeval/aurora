@@ -11,9 +11,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +24,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -39,4 +42,31 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.description {
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font-size: 1rem;
+  color: #eaeaea;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .25rem;
+  margin-top: 1rem;
+  border-top: 1px solid hsl(0, 0%, 100%, .05);
+  width: 100%;
+  padding-top: 1rem;
 }

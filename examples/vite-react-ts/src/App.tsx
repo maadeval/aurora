@@ -32,21 +32,25 @@ function App() {
 }
 
 const AlertContent = ({ deleteToast, tryAgain }) => {
-  const [messageBtn, setMessageBtn] = useState('Intentar guardar nuevament')
+  const [messageBtn, setMessageBtn] = useState('Volver a intentar')
 
   return (
     <>
-      <h3>El usuario no se guardo correctamente...</h3>
-      <p>Desea volver a intentar guardarlo?</p>
-      <button onClick={() => deleteToast()}>Cancelar</button>
-      <button
-        onClick={() => {
-          tryAgain()
-          setMessageBtn('Guardado! 🎉')
-        }}
-      >
-        {messageBtn}
-      </button>
+      <p className='description'>
+        No se han podido colocar <strong>Iphone 16</strong> en la lista de
+        compras, deseas intentar otra vez?
+      </p>
+      <div className='button-container'>
+        <button onClick={() => deleteToast()}>Cancelar</button>
+        <button
+          onClick={() => {
+            tryAgain()
+            setMessageBtn('Guardado! 🎉')
+          }}
+        >
+          {messageBtn}
+        </button>
+      </div>
     </>
   )
 }

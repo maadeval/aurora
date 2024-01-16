@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
+import { PluginOption, defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react-swc'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
@@ -13,7 +13,7 @@ const watch = isWatchMode
   : null
 
 export default defineConfig({
-  plugins: [react(), dts(), cssInjectedByJsPlugin()],
+  plugins: [react(), dts(), cssInjectedByJsPlugin()] as PluginOption[],
   build: {
     watch,
     lib: {

@@ -26,6 +26,8 @@ export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
       })
     }
 
+    // prevent toast make animation of created before was created
+
     eventCreate.subscribe(handleCreateToast)
 
     return () => eventCreate.unsubscribe(handleCreateToast)
@@ -60,11 +62,18 @@ export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
   /* delete existing toast */
   useEffect(() => {
     const handleDeleteToast = (toastId: ToastId) => {
-      setToastState((prev) => {
-        const newToasts = new Map(prev)
-        newToasts.delete(toastId)
-        return newToasts
-      })
+      const toastElement = document.querySelector(
+        "[data-toast-id='" + toastId + "']"
+      )!
+      toastElement.classList.add(style.toastItemDelete)
+
+      setTimeout(() => {
+        setToastState((prev) => {
+          const newToasts = new Map(prev)
+          newToasts.delete(toastId)
+          return newToasts
+        })
+      }, 500)
     }
 
     eventDelete.subscribe(handleDeleteToast)
@@ -112,12 +121,18 @@ export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
   return (
     <div
       {...props}
-      className={style[position]}
+      className={`${style[position]} ${style.toastContainer}`}
       onMouseEnter={handlePauseAllToast}
       onMouseLeave={handleResumeAllToast}
     >
-      {[...toastState].map(([index, toast]) => (
-        <div data-type={toast.type} key={index}>
+      {[...toastState].map(([index, toast], indexElement) => (
+        <div
+          className={`${style.toastItem}`}
+          data-type={toast.type}
+          data-toast-id={index}
+          data-is-first={indexElement === 0}
+          key={index}
+        >
           {toast.showCloseButton && (
             <button title='close' onClick={() => eventDelete.delete(index)}>
               ❌

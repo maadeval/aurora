@@ -2,7 +2,7 @@ import { Toast, ToastWithoutIdAndType } from '../types/Toast'
 import { ToastId } from '../types/ToastId'
 import { ToastTypes } from '../types/ToastTypes'
 import { handleGetTimingProps } from './eventHelpers'
-import { CreateToastPromise, CustomEventDetail } from './eventTypes'
+import { CreateToastPromise, CustomEventDetail } from '../types/Events'
 import { eventUpdate } from './eventUpdate'
 
 enum CUSTOM_EVENT_CREATE_NAME {

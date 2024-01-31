@@ -1,0 +1,27 @@
+.toastContainer {
+  margin: 1.5rem;
+  height: max-content;
+  max-width: 360px;
+  width: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.toastContainer::-webkit-scrollbar {
+  width: 0;
+}
+
+.toastItem {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: hsla(0, 0%, 10%, 1);
+  padding: 1rem;
+  border: 1px solid hsl(0, 0%, 10%, .05);
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px hsl(0, 0%, 100%, 0.01);
+  z-index: 9;
+  margin-top: 0%;
+  transition: margin-top 300ms ease,
+    transform 300ms ease, opacity 300ms ease;
+}

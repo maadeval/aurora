@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Toast as IToast } from '../types/Toast'
 import { eventCreate } from '../core/eventCreate'
 import { eventUpdate } from '../core/eventUpdate'
@@ -13,12 +13,23 @@ type Props = {
   position?: ToastPosition
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'>
 
+const TOAST_STATE = {
+  CREATED: 'created',
+  UPDATED: 'updated',
+  DELETED: 'deleted',
+  NEUTRAL: 'neutral',
+} as const
+
+type ToastStateType = (typeof TOAST_STATE)[keyof typeof TOAST_STATE]
+
 export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
   const [toastState, setToastState] = useState(new Map<ToastId, IToast>())
-
+  const toastsState = useRef<ToastStateType>(TOAST_STATE.NEUTRAL)
+  /* TODO: agregar estilos a partir del map cuando se cree un nuevo elemento. y despues cuando se elimina, removerlo  */
   /* set new toast */
   useEffect(() => {
     const handleCreateToast = (toast: IToast) => {
+      toastsState.current = TOAST_STATE.CREATED
       setToastState((prev) => {
         const newToast = new Map(prev)
         newToast.set(toast.id, toast)
@@ -27,7 +38,6 @@ export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
     }
 
     // prevent toast make animation of created before was created
-
     eventCreate.subscribe(handleCreateToast)
 
     return () => eventCreate.unsubscribe(handleCreateToast)
@@ -62,18 +72,13 @@ export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
   /* delete existing toast */
   useEffect(() => {
     const handleDeleteToast = (toastId: ToastId) => {
-      const toastElement = document.querySelector(
-        "[data-toast-id='" + toastId + "']"
-      )!
-      toastElement.classList.add(style.toastItemDelete)
+      toastsState.current = TOAST_STATE.DELETED
 
-      setTimeout(() => {
-        setToastState((prev) => {
-          const newToasts = new Map(prev)
-          newToasts.delete(toastId)
-          return newToasts
-        })
-      }, 500)
+      setToastState((prev) => {
+        const newToasts = new Map(prev)
+        newToasts.delete(toastId)
+        return newToasts
+      })
     }
 
     eventDelete.subscribe(handleDeleteToast)
@@ -130,7 +135,9 @@ export const Toast = ({ position = 'bottom-right', ...props }: Props) => {
           className={`${style.toastItem}`}
           data-type={toast.type}
           data-toast-id={index}
-          data-is-first={indexElement === 0}
+          /* set toastsState as target value */
+          data-toast-state={toastsState.current}
+          data-toast-is-first={indexElement === 0}
           key={index}
         >
           {toast.showCloseButton && (

@@ -1,0 +1,37 @@
+.top-left {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.top-center {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.top-right {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.bottom-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.bottom-center {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bottom-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}

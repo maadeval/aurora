@@ -1,37 +1,9 @@
-.top-left {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
+@import url('./ToastPositions.module.css');
+@import url('./ToastElements.module.css');
+@import url('./ToastCreatedStyles.module.css');
+@import url('./ToastDeletedStyles.module.css');
 
-.top-center {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.top-right {
-  position: fixed;
-  top: 0;
-  right: 0;
-}
-
-.bottom-left {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-}
-
-.bottom-center {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.bottom-right {
-  position: fixed;
-  bottom: 0;
-  right: 0;
+:root {
+  --toast-positionIndex: 99999;
+  --toast-animationDuration: 300ms;
 }

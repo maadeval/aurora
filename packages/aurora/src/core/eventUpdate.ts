@@ -1,7 +1,7 @@
 import { Toast, ToastWithoutIdAndType } from '../types/Toast'
 import { ToastId } from '../types/ToastId'
 import { ToastTypesWithoutPromise } from '../types/ToastTypes'
-import { CustomEventDetail } from './eventTypes'
+import { CustomEventDetail } from '../types/Events'
 
 const CUSTOM_EVENT_UPDATE_NAME = 'custom__toast__event__update'
 

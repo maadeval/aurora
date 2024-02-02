@@ -1,0 +1,82 @@
+/* animate only first toast */
+[data-toast-state="created"]:last-child {
+  z-index: var(--toast-positionIndex);
+  animation: slideIn 300ms ease;
+  position: relative;
+}
+
+/* animate second toast */
+[data-toast-state="created"]:nth-last-child(2) {
+  position: absolute;
+  z-index: var(--toast-positionIndex) - 1;
+  animation: secondToastAimation 300ms ease forwards;
+}
+
+/* animate third toast */
+[data-toast-state="created"]:nth-last-child(3) {
+  position: absolute;
+  animation: thirdToastAnimation 300ms ease forwards;
+  z-index: var(--toast-positionIndex) - 2;
+}
+
+/* animate fouth toast */
+[data-toast-state="created"]:nth-last-child(n+4) {
+  position: absolute;
+  z-index: var(--toast-positionIndex) - 3;
+  animation: fourthToastAnimation 300ms ease forwards;
+}
+
+/* first toast animation */
+@keyframes slideIn {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+@keyframes secondToastAimation {
+  0% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+    bottom: 0rem;
+  }
+
+  100% {
+    transform: translateY(0%) scale(.95);
+    opacity: .8;
+    bottom: 1rem;
+  }
+}
+
+@keyframes thirdToastAnimation {
+  0% {
+    transform: translateY(0%) scale(.95);
+    opacity: .8;
+    bottom: 1rem;
+  }
+
+  100% {
+    transform: translateY(0%) scale(.9);
+    opacity: .5;
+    bottom: 2rem;
+  }
+}
+
+@keyframes fourthToastAnimation {
+  0% {
+    transform: translateY(0%) scale(.9);
+    opacity: .5;
+    bottom: 2rem;
+  }
+
+  100% {
+    transform: translateY(0%) scale(.8);
+    opacity: 0;
+    bottom: 3rem;
+  }
+}

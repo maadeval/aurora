@@ -1,5 +1,5 @@
 import { ToastId } from '../types/ToastId'
-import { CustomEventDetailOnlyId } from './eventTypes'
+import { CustomEventDetailOnlyId } from '../types/Events'
 
 const CUSTOM_EVENT_DELETE_NAME = 'custom__toast__event__delete'
 
